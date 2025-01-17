@@ -6,16 +6,25 @@ from ecomerc.models import Factory, Retail, Individual
 @admin.register(Factory)
 class FactoryAdmin(admin.ModelAdmin):
     """ Выводим в админ панель таблицу заводов """
-    list_display = ['user', 'name', 'product', 'created_at']
+    list_display = ['id', 'user', 'product', 'created_at']
+
+    # TODO: сделать выборку user клиентов только Завод
+    # TODO: добавить отображение дополнительного поля self.user.name
 
 
 @admin.register(Retail)
 class RetailAdmin(admin.ModelAdmin):
     """ Выводим в админ панель таблицу розничных сетей """
-    list_display = ['user', 'name', 'product', 'created_at', 'supplier', 'debt']
+    list_display = ['id', 'user', 'product', 'created_at', 'supplier', 'debt']
+
+    # TODO: сделать выборку user клиентов только Розничная сеть
+    # TODO: добавить отображение дополнительного поля self.user.name
 
 
 @admin.register(Individual)
 class IndividualAdmin(admin.ModelAdmin):
     """ Выводим в админ панель таблицу индивидуальных предпринимателей """
-    list_display = ['user', 'name', 'product', 'created_at', 'supplier', 'debt']
+    list_display = ['id', 'user', 'product', 'created_at', 'supplier', 'debt']
+
+    # TODO: сделать выборку user клиентов только Индивидуальный предприниматель
+    # TODO: добавить отображение дополнительного поля self.user.name

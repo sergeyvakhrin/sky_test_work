@@ -8,7 +8,8 @@ class User(AbstractUser):
     username = None
 
     email = models.EmailField(max_length=255, unique=True, verbose_name='Почта', help_text='Укажите почту')
-    user_type = models.OneToOneField('ClientType', on_delete=models.SET_NULL, to_field='client_type', verbose_name='Тип клиента', related_name='user_type', null=True)
+    user_type = models.ForeignKey('ClientType', on_delete=models.SET_NULL, to_field='client_type', verbose_name='Тип клиента', related_name='user_type', null=True)
+    name = models.CharField(max_length=255, verbose_name='Наименование организации', help_text='Укажите наименование организации', unique=True)
     country = models.CharField(max_length=30, verbose_name='Страна', help_text='Укажите страну производства')
     city = models.CharField(max_length=100, verbose_name='Город', help_text='Укажите город', **NULLABLE)
     street = models.CharField(max_length=100, verbose_name='Улица', help_text='Укажите улицу', **NULLABLE)
