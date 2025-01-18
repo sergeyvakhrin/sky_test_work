@@ -1,11 +1,16 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+from config import settings
+from ecomerc.models import Factory
+
 NULLABLE = {"null": True, "blank": True}
 
 class User(AbstractUser):
     """ Модель для авторизации """
     username = None
+    last_name = None
+    first_name = None
 
     email = models.EmailField(max_length=255, unique=True, verbose_name='Почта', help_text='Укажите почту')
     user_type = models.ForeignKey('ClientType', on_delete=models.SET_NULL, to_field='client_type', verbose_name='Тип клиента', related_name='user_type', null=True)
@@ -27,7 +32,7 @@ class User(AbstractUser):
 
 
 class ClientType(models.Model):
-    """ Модель с типом клиента Завод, оптовик, покупатель """
+    """ Модель с типом клиента Завод, оптовик, покупатель легко расширить """
     CHOICES = {
         "FACTORY": "Factory",
         "RETAIL": "Retail",

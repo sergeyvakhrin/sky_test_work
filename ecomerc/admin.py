@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from ecomerc.models import Factory, Retail, Individual, Product
+from ecomerc.models import Factory, Retail, Individual
 
 
 @admin.register(Factory)
@@ -28,9 +28,3 @@ class IndividualAdmin(admin.ModelAdmin):
 
     # TODO: сделать выборку user клиентов только Индивидуальный предприниматель
     # TODO: добавить отображение дополнительного поля self.user.name
-
-
-@admin.register(Product)
-class ProductAdmin(admin.ModelAdmin):
-    """ Выводим в админ панель таблицу индивидуальных предпринимателей """
-    list_display = ['id', 'name', 'model_product', 'release_date']
