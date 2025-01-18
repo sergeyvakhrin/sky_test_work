@@ -1,12 +1,19 @@
 from django.contrib import admin
 
+from ecomerc.models import Factory, Retail, Individual
 from users.models import User, ClientType
 
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
     """ Выводим в админ панель таблицу пользователей """
-    list_display = ['id', 'email', 'name', 'user_type', 'country', 'city', 'street', 'house_number']
+    list_display = ['id','name', 'email', 'country', 'city', 'street', 'house_number', 'user_type']
+
+    def get_readonly_fields(self, request, obj=None):
+        """ Делаем поля только для чтения, если просмотр """
+        if obj:
+            return self.readonly_fields + ('user_type',)
+        return self.readonly_fields
 
 
 @admin.register(ClientType)
