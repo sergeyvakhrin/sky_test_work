@@ -25,7 +25,7 @@ class Retail(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Пользователь', help_text='Выберите пользователя', related_name='user_retail')
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, verbose_name='Продукты', **NULLABLE)
     created_at = models.DateField(verbose_name="Дата создания", auto_now_add=True)
-    supplier = models.ForeignKey(User, on_delete=models.SET_NULL, verbose_name='Поставщик', help_text='Укажите поставщика', null=True)
+    supplier = models.ForeignKey(User, on_delete=models.SET_NULL, verbose_name='Поставщик', help_text='Укажите поставщика', **NULLABLE)
     debt = models.FloatField(default=0, verbose_name='Задолженность перед поставщиком')
 
     # TODO: Поле user выдавать только клиенты с типом Розничная сеть. А лучше автоматически создавать Завод в момент создания пользователя с типом Розничная сеть

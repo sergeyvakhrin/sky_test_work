@@ -44,15 +44,15 @@ class FactoryAdmin(admin.ModelAdmin):
 @admin.register(Retail)
 class RetailAdmin(admin.ModelAdmin):
     """ Выводим в админ панель таблицу Розничных сетей """
-    list_display = ['id', 'user_name', 'user_email', 'product_list', 'created_at', 'supplier', 'debt']
-    list_display_links = ['id', 'user_name', 'user_email', 'product_list', 'created_at', 'supplier', 'debt']
+    list_display = ['id', 'user_name', 'user_email', 'product_list', 'created_at', 'debt']
+    list_display_links = ['id', 'user_name', 'user_email', 'product_list', 'created_at', 'debt']
     exclude = ['product']
     readonly_fields = ['debt']
 
     def get_readonly_fields(self, request, obj=None):
         """ Делаем поля только для чтения, если просмотр """
         if obj:
-            return self.readonly_fields + ['user', 'supplier']
+            return self.readonly_fields + ['user_name', 'user']
         return self.readonly_fields
 
     # TODO: При создании записи таблицы сделать выборку user клиентов только Розничная сеть
@@ -61,6 +61,13 @@ class RetailAdmin(admin.ModelAdmin):
     def user_name(self, warehouse: Warehouse):
         """ Выводим наименование Розничной сети """
         return warehouse.user.name
+
+    # @admin.display(description='Поставщик')
+    # def supplier_name(self, retail: Retail):
+    #     """ Выводим наименование Розничной сети """
+    #     if retail.supplier.name:
+    #         return retail.supplier.name
+    #     return 'Поставщик не выбран'
 
     @admin.display(description='Электронная почта')
     def user_email(self, warehouse: Warehouse):
@@ -83,15 +90,15 @@ class RetailAdmin(admin.ModelAdmin):
 @admin.register(Individual)
 class IndividualAdmin(admin.ModelAdmin):
     """ Выводим в админ панель таблицу Индивидуальных Предпринимателей """
-    list_display = ['id', 'user_name', 'user_email', 'product_list', 'created_at', 'supplier', 'debt']
-    list_display_links = ['id', 'user_name', 'user_email', 'product_list', 'created_at', 'supplier', 'debt']
+    list_display = ['id', 'user_name', 'user_email', 'product_list', 'created_at', 'supplier_name', 'debt']
+    list_display_links = ['id', 'user_name', 'user_email', 'product_list', 'created_at', 'supplier_name', 'debt']
     exclude = ['product']
     readonly_fields = ['debt']
 
     def get_readonly_fields(self, request, obj=None):
         """ Делаем поля только для чтения, если просмотр """
         if obj:
-            return self.readonly_fields + ['user', 'supplier']
+            return self.readonly_fields + ['user_name', 'supplier_name', 'user', 'supplier']
         return self.readonly_fields
 
     # TODO: При создании записи таблицы сделать выборку user клиентов только Индивидуальный предприниматель
@@ -100,6 +107,11 @@ class IndividualAdmin(admin.ModelAdmin):
     def user_name(self, product: Product):
         """ Выводим наименование ИП """
         return product.user.name
+
+    @admin.display(description='Поставщик')
+    def supplier_name(self, individual: Individual):
+        """ Выводим наименование Розничной сети """
+        return individual.supplier.name
 
     @admin.display(description='Электронная почта')
     def user_email(self, product: Product):
