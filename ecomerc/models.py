@@ -11,6 +11,8 @@ class Factory(models.Model):
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, verbose_name='Продукты', **NULLABLE) # TODO: отобразить список продуктов
     created_at = models.DateField(verbose_name="Дата создания", auto_now_add=True)
 
+    # TODO: Поле user выдавать только клиенты с типом Завод. А лучше автоматически создавать Завод в момент создания пользователя с типом завод
+
     class Meta:
         verbose_name = 'Завод'
         verbose_name_plural = 'Заводы'
@@ -25,6 +27,8 @@ class Retail(models.Model):
     created_at = models.DateField(verbose_name="Дата создания", auto_now_add=True)
     supplier = models.ForeignKey(User, on_delete=models.SET_NULL, verbose_name='Поставщик', help_text='Укажите поставщика', null=True)
     debt = models.FloatField(default=0, verbose_name='Задолженность перед поставщиком')
+
+    # TODO: Поле user выдавать только клиенты с типом Розничная сеть. А лучше автоматически создавать Завод в момент создания пользователя с типом Розничная сеть
 
     class Meta:
         verbose_name = 'Розничная сеть'
@@ -43,6 +47,8 @@ class Individual(models.Model):
     created_at = models.DateField(verbose_name="Дата создания", auto_now_add=True)
     supplier = models.ForeignKey(User, on_delete=models.SET_NULL, verbose_name='Поставщик', help_text='Укажите поставщика', null=True)
     debt = models.FloatField(default=0, verbose_name='Задолженность перед поставщиком')
+
+    # TODO: Поле user выдавать только клиенты с типом Индивидуальный предприниматель. А лучше автоматически создавать Завод в момент создания пользователя с типом Индивидуальный предприниматель
 
     class Meta:
         verbose_name = 'Индивидуальный предприниматель'

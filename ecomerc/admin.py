@@ -1,17 +1,16 @@
 from django.contrib import admin
 
 from ecomerc.models import Factory, Retail, Individual
-from products.models import Product
-from users.models import User
+from products.models import Product, Warehouse
 
 
 @admin.register(Factory)
 class FactoryAdmin(admin.ModelAdmin):
-    """ Выводим в админ панель таблицу заводов """
+    """ Выводим в админ панель таблицу Заводов """
     list_display = ['id', 'user_name', 'user_email', 'product_list', 'created_at']
+    list_display_links = ['id', 'user_name', 'user_email', 'product_list', 'created_at']
 
-    # TODO: сделать выборку user клиентов только Завод
-    # TODO: добавить отображение дополнительного поля self.user.name что бы выводилось название пользователя
+    # TODO: При создании записи таблицы сделать выборку user клиентов только Завод
 
     def get_readonly_fields(self, request, obj=None):
         """ Делаем поля только для чтения, если просмотр """
@@ -20,31 +19,33 @@ class FactoryAdmin(admin.ModelAdmin):
         return self.readonly_fields
 
     @admin.display(description='Название завода')
-    def user_name(self, product: Product):
+    def user_name(self, warehouse: Warehouse):
         """ Выводим наименование Завода """
-        return product.user.name
+        return warehouse.user.name
 
     @admin.display(description='Электронная почта')
-    def user_email(self, product: Product):
+    def user_email(self, warehouse: Warehouse):
         """ Выводим почту Завода """
-        return product.user.email
+        return warehouse.user.email
 
     @admin.display(description='Список товаров')
-    def product_list(self, product: Product):
+    def product_list(self, warehouse: Warehouse):
         """ Выводим список продуктов конкретного завода """
-        if product:
-            products = Product.objects.filter(user=product.user)
+        if warehouse:
+            warehouses = Warehouse.objects.filter(user=warehouse.user)
             products_name = []
-            for product in products:
-                products_name.append(product.name)
-            return products_name
+            for warehous in warehouses:
+                products_name.append(warehous.product.name)
+            if len(products_name) > 0:
+                return products_name
         return 'Нет продуктов'
 
 
 @admin.register(Retail)
 class RetailAdmin(admin.ModelAdmin):
-    """ Выводим в админ панель таблицу розничных сетей """
-    list_display = ['id', 'user', 'product', 'created_at', 'supplier', 'debt']
+    """ Выводим в админ панель таблицу Розничных сетей """
+    list_display = ['id', 'user_name', 'user_email', 'product_list', 'created_at', 'supplier', 'debt']
+    list_display_links = ['id', 'user_name', 'user_email', 'product_list', 'created_at', 'supplier', 'debt']
     exclude = ['product']
     readonly_fields = ['debt']
 
@@ -54,14 +55,36 @@ class RetailAdmin(admin.ModelAdmin):
             return self.readonly_fields + ['user', 'supplier']
         return self.readonly_fields
 
-    # TODO: сделать выборку user клиентов только Розничная сеть
-    # TODO: добавить отображение дополнительного поля self.user.name
+    # TODO: При создании записи таблицы сделать выборку user клиентов только Розничная сеть
+
+    @admin.display(description='Название Сети')
+    def user_name(self, warehouse: Warehouse):
+        """ Выводим наименование Розничной сети """
+        return warehouse.user.name
+
+    @admin.display(description='Электронная почта')
+    def user_email(self, warehouse: Warehouse):
+        """ Выводим почту Розничной сети """
+        return warehouse.user.email
+
+    @admin.display(description='Список товаров')
+    def product_list(self, warehouse: Warehouse):
+        """ Выводим список продуктов конкретной Розничной сети """
+        if warehouse:
+            warehouses = Warehouse.objects.filter(user=warehouse.user)
+            products_name = []
+            for warehous in warehouses:
+                products_name.append(warehous.product.name)
+            if len(products_name) > 0:
+                return products_name
+        return 'Нет продуктов'
 
 
 @admin.register(Individual)
 class IndividualAdmin(admin.ModelAdmin):
-    """ Выводим в админ панель таблицу индивидуальных предпринимателей """
-    list_display = ['id', 'user', 'product', 'created_at', 'supplier', 'debt']
+    """ Выводим в админ панель таблицу Индивидуальных Предпринимателей """
+    list_display = ['id', 'user_name', 'user_email', 'product_list', 'created_at', 'supplier', 'debt']
+    list_display_links = ['id', 'user_name', 'user_email', 'product_list', 'created_at', 'supplier', 'debt']
     exclude = ['product']
     readonly_fields = ['debt']
 
@@ -71,8 +94,26 @@ class IndividualAdmin(admin.ModelAdmin):
             return self.readonly_fields + ['user', 'supplier']
         return self.readonly_fields
 
-    # TODO: сделать выборку user клиентов только Индивидуальный предприниматель
-    # TODO: добавить отображение дополнительного поля self.user.name
+    # TODO: При создании записи таблицы сделать выборку user клиентов только Индивидуальный предприниматель
 
+    @admin.display(description='Название ИП')
+    def user_name(self, product: Product):
+        """ Выводим наименование ИП """
+        return product.user.name
 
+    @admin.display(description='Электронная почта')
+    def user_email(self, product: Product):
+        """ Выводим почту ИП """
+        return product.user.email
 
+    @admin.display(description='Список товаров')
+    def product_list(self, warehouse: Warehouse):
+        """ Выводим список продуктов конкретного ИП """
+        if warehouse:
+            warehouses = Warehouse.objects.filter(user=warehouse.user)
+            products_name = []
+            for warehous in warehouses:
+                products_name.append(warehous.product.name)
+            if len(products_name) > 0:
+                return products_name
+        return 'Нет продуктов'
